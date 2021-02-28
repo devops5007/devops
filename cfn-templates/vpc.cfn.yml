@@ -1,0 +1,58 @@
+#create ECR repository
+AWSTemplateFormatVersion: "2010-09-09"
+Description: create VPC resources repository
+Parameters:
+    Environment:
+      Description: An environment name that will be prefixed to resource names
+      Type: String
+      Default: dev
+
+    EcrRepositoryName:
+      Description: A name for your repository
+      Type: String
+      ConstraintDescription: must contain only alphanumeric characters and -.
+      Default: dev-repository
+      AllowedPattern: "[a-zA-Z0-9-]*"
+
+    ECSClusterName:
+      Description: An ecs cluster name 
+      Type: String
+      Default: dev-cluster
+      MinLength: 3
+      ConstraintDescription: Must be a string of length >= 3
+
+Resources:
+  MyECRRepo:
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Ref 'EcrRepositoryName' 
+      ImageScanningConfiguration: 
+        ScanOnPush: "true"
+      Tags:
+        - Key: Name
+          Value: !Sub '${EcrRepositoryName} - ${AWS::StackName}' 
+
+# ECS Resources
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref ECSClusterName
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+      Tags:
+        - Key: Name
+          Value: !Sub 'dev cluster - ${AWS::StackName}'
+        - Key: Environment
+          Value: !Ref Environment        
+Outputs:    
+  RepoUrl:
+    Description: The DNS Url of the ECR repository
+    Export:
+     Name: !Join [ '-', [ !Ref EcrRepositoryName, 'ECR' ] ]
+    Value: !Join [".",[!Sub "${AWS::AccountId}", "dkr", "ecr", !Sub "${AWS::Region}",  !Join [ "/", [ "amazonaws.com", "dev-repository" ] ]]]
+  ClusterName:
+    Description: The name of the ECS cluster
+    Value: !Ref 'ECSCluster'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ClusterName'] ]
