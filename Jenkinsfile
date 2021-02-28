@@ -33,7 +33,7 @@ pipeline {
             }
        }
 
-       	stage ('Deploy to QA stack') {
+       /*	stage ('Deploy to dev stack') {
 			steps {
 					script {
 						if (env.BRANCH_NAME == "development") {
@@ -49,7 +49,7 @@ pipeline {
 						}
 					}
 			}	
-		}
+		}*/
 
     }
     tools {
