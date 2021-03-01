@@ -120,8 +120,8 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>in28min/${project.name}</repository>
-					<tag>${project.version}</tag>
+					<repository>${REPOSITORY_URL}</repository>
+					<tag>${BUILD_NUMBER}</tag>
 					<skipDockerInfo>true</skipDockerInfo>
 				</configuration>
 			</plugin>
