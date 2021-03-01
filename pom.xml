@@ -99,7 +99,7 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<build>
+	<!-- <build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -120,13 +120,13 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>${REPOSITORY_URL}</repository>
-					<tag>${BUILD_NUMBER}</tag>
+					<repository>${project.name}</repository>
+					<tag>${project.version}</tag>
 					<skipDockerInfo>true</skipDockerInfo>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 
 	<repositories>
 		<repository>
